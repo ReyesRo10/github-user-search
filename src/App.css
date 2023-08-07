@@ -1,0 +1,67 @@
+:root {
+  --dark-blue: #141d2f;
+  --medium-blue: #1e2a47;
+  --light-blue: #0079ff;
+  --white: #fff;
+}
+body {
+  color: white;
+  background-color: var(--dark-blue);
+}
+
+.container {
+  width: 100%;
+  height: auto;
+  border: 1px solid red;
+}
+
+.header_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 24px 31px;
+}
+
+.header_icon {
+  display: flex;
+}
+
+/*Search input*/
+.search_section {
+  display: flex;
+  justify-content: space-around;
+}
+
+/*user info*/
+.user_section {
+  background-color: var(--medium-blue);
+}
+.user_title {
+  display: flex;
+  align-items: center;
+}
+
+.user_image {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+.user_stats {
+  background-color: var(--dark-blue);
+}
+.user_stats_title {
+  display: flex;
+  justify-content: space-around;
+}
+
+.user_stats_info {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+}
+
+.user_info_location {
+  display: flex;
+  align-items: center;
+}
