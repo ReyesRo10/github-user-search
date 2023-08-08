@@ -5,8 +5,40 @@ import locationIcon from './assets/icon-location.svg';
 import websiteIcon from './assets/icon-website.svg';
 import twitterIcon from './assets/icon-twitter.svg';
 import companyIcon from './assets/icon-company.svg';
+import { useState } from 'react';
+
+const USERINFO_ENDPOINT = 'https://api.github.com/users/octocat';
 
 function App() {
+  const [location, setLocation] = useState('');
+  const [website, setWebsite] = useState('');
+  const [twitter, setTwitter] = useState('');
+  const [company, setCompany] = useState('');
+  const [repos, setRepos] = useState();
+  const [following, setFollowing] = useState();
+  const [followers, setFollowers] = useState();
+  const [bio, setBio] = useState('');
+  const [name, setName] = useState('');
+  const [userName, setUserName] = useState('');
+  const [dateCreated, setDateCreated] = useState('');
+  const [userAvatar, setUserAvatar] = useState('');
+  const handleSearch = async () => {
+    const res = await fetch(USERINFO_ENDPOINT);
+    const data = await res.json();
+    setLocation(data.location);
+    setWebsite(data.blog);
+    setTwitter(data.twitter_username);
+    setCompany(data.company);
+    setRepos(data.public_repos);
+    setFollowing(data.following);
+    setFollowers(data.followers);
+    setBio(data.bio);
+    setName(data.name);
+    setUserName(data.login);
+    setDateCreated(data.created_at);
+    setUserAvatar(data.avatar_url);
+  };
+
   return (
     <div className='container'>
       <header className='header_container'>
@@ -20,24 +52,18 @@ function App() {
         <section className='search_section'>
           <img src={searchIcon} />
           <input type='text' placeholder='Search Github username...'></input>
-          <button>Search</button>
+          <button onClick={handleSearch}>Search</button>
         </section>
         <section className='user_section'>
           <div className='user_title'>
-            <img
-              className='user_image'
-              src='https://avatars.githubusercontent.com/u/583231?v=4'
-            />
+            <img className='user_image' src={userAvatar} />
             <div>
-              <p>The Octocat</p>
-              <p>@octocat</p>
-              <p>Joined 25 jan 2011</p>
+              <p>{name}</p>
+              <p>@{userName}</p>
+              <p>{dateCreated}</p>
             </div>
           </div>
-          <p>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec
-            odio. Quisque volutpat mattis eros.
-          </p>
+          {bio ? <p>{bio}</p> : <p>Not available</p>}
           <div className='user_stats'>
             <div className='user_stats_title'>
               <p>Repos</p>
@@ -45,27 +71,28 @@ function App() {
               <p>Following</p>
             </div>
             <div className='user_stats_info'>
-              <p>8</p>
-              <p>3938</p>
-              <p>9</p>
+              <p>{repos}</p>
+              <p>{followers}</p>
+              <p>{following}</p>
             </div>
           </div>
           <div className='user_info'>
             <div className='user_info_location'>
               <img src={locationIcon} />
-              <p>San Francisco</p>
+              <p>{location}</p>
             </div>
             <div className='user_info_location'>
               <img src={websiteIcon} />
-              <p>github.blog</p>
+              <p>{website}</p>
             </div>
             <div className='user_info_location'>
               <img src={twitterIcon} />
-              <p>Not Available</p>
+
+              {twitter ? <p>{twitter}</p> : <p>Not available</p>}
             </div>
             <div className='user_info_location'>
               <img src={companyIcon} />
-              <p>@github</p>
+              <p>{company}</p>
             </div>
           </div>
         </section>
