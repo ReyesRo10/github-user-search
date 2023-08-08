@@ -1,9 +1,16 @@
-const USERINFO_ENDPOINT = 'https://api.github.com/users/octocat';
+//const USERINFO_ENDPOINT = `https://api.github.com/users/${search}`;
 
-export const getUserInfo = async () => {
-  const res = await fetch(USERINFO_ENDPOINT);
-  const data = await res.json();
-  const { userInfo } = data;
-  console.log(userInfo);
-  return userInfo;
+export const searchUser = async ({ search }) => {
+  if (search === '') return null;
+
+  try {
+    const res = await fetch(`https://api.github.com/users/${search}`);
+    const data = await res.json();
+
+    const user = data.Search;
+
+    return user;
+  } catch (error) {
+    throw new Error('Error searching user');
+  }
 };

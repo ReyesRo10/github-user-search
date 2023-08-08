@@ -5,9 +5,9 @@ import locationIcon from './assets/icon-location.svg';
 import websiteIcon from './assets/icon-website.svg';
 import twitterIcon from './assets/icon-twitter.svg';
 import companyIcon from './assets/icon-company.svg';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-const USERINFO_ENDPOINT = 'https://api.github.com/users/octocat';
+//const USERINFO_ENDPOINT = 'https://api.github.com/users/octocat';
 
 function App() {
   const [location, setLocation] = useState('');
@@ -22,8 +22,18 @@ function App() {
   const [userName, setUserName] = useState('');
   const [dateCreated, setDateCreated] = useState('');
   const [userAvatar, setUserAvatar] = useState('');
-  const handleSearch = async () => {
-    const res = await fetch(USERINFO_ENDPOINT);
+
+  const [query, setQuery] = useState('');
+  const [error, setError] = useState(null);
+
+  const handleSearch = async (event) => {
+    event.preventDefault();
+    //Recuperando valor del input
+    //const input = new window.FormData(event.target);
+    //const query = input.get('query');
+    console.log(query);
+
+    const res = await fetch(`https://api.github.com/users/${query}`);
     const data = await res.json();
     setLocation(data.location);
     setWebsite(data.blog);
@@ -39,21 +49,40 @@ function App() {
     setUserAvatar(data.avatar_url);
   };
 
+  const handleChange = (event) => {
+    const newQuery = event.target.value;
+    if (newQuery.startsWith(' ')) return;
+    setQuery(newQuery);
+
+    if (newQuery === '') {
+      setError('No se puede buscar un usuario vacio');
+      return;
+    }
+    setError(null);
+  };
+
   return (
     <div className='container'>
       <header className='header_container'>
-        <h1>devfinder</h1>
+        <h1 className='header_title'>devfinder</h1>
         <div className='header_icon'>
           <h3>Light</h3>
           <img src={sunIcon} />
         </div>
       </header>
       <main>
-        <section className='search_section'>
+        <form onSubmit={handleSearch} className='search_section'>
           <img src={searchIcon} />
-          <input type='text' placeholder='Search Github username...'></input>
-          <button onClick={handleSearch}>Search</button>
-        </section>
+          <input
+            onChange={handleChange}
+            value={query}
+            name='query'
+            type='text'
+            placeholder='Search Github username...'
+          ></input>
+          <button>Search</button>
+        </form>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
         <section className='user_section'>
           <div className='user_title'>
             <img className='user_image' src={userAvatar} />
