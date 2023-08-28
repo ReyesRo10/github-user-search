@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --body-bg: 246 248 255;
+    --app-bg: 254 254 254;
+    --text-color-one: 75 106 155;
+    --text-color-two: 34 39 49;
+    --text-color-three: 105 124 154;
+    --theme-toggle-hover-color: 34 39 49;
+  }
+  html {
+    font-family: 'Space Mono', monospace;
+  }
+}
+
+/*
+@media (prefers-color-scheme: dark) {
+  :root {
+    --body-bg: 20 29 47;
+    --app-bg: 30 42 71;
+    --text-color-one: 255 255 255;
+    --text-color-two: 255 255 255;
+    --text-color-three: 255 255 255;
+    --theme-toggle-hover-color: 144 164 222;
+  }
+}
+*/
+
+:root[class='dark'] {
+  --body-bg: 20 29 47;
+  --app-bg: 30 42 71;
+  --text-color-one: 255 255 255;
+  --text-color-two: 255 255 255;
+  --text-color-three: 255 255 255;
+  --theme-toggle-hover-color: 144 164 222;
+}
