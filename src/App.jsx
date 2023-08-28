@@ -1,131 +1,43 @@
 import './App.css';
-import sunIcon from './assets/icon-sun.svg';
-import searchIcon from './assets/icon-search.svg';
-import locationIcon from './assets/icon-location.svg';
-import websiteIcon from './assets/icon-website.svg';
-import twitterIcon from './assets/icon-twitter.svg';
-import companyIcon from './assets/icon-company.svg';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Header } from './components/Header';
+import { InputSearch } from './components/InputSearch';
+import { UserData } from './components/UserData';
 
 //const USERINFO_ENDPOINT = 'https://api.github.com/users/octocat';
 
 function App() {
-  const [location, setLocation] = useState('');
-  const [website, setWebsite] = useState('');
-  const [twitter, setTwitter] = useState('');
-  const [company, setCompany] = useState('');
-  const [repos, setRepos] = useState();
-  const [following, setFollowing] = useState();
-  const [followers, setFollowers] = useState();
-  const [bio, setBio] = useState('');
-  const [name, setName] = useState('');
-  const [userName, setUserName] = useState('');
-  const [dateCreated, setDateCreated] = useState('');
-  const [userAvatar, setUserAvatar] = useState('');
+  //const isDarkMode = JSON.parse(localStorage.getItem('dark-mode'));
+  const [theme, setTheme] = useState('light');
+  const [userData, setUserData] = useState({});
 
-  const [query, setQuery] = useState('');
-  const [error, setError] = useState(null);
+  /* useEffect(() => {
+    localStorage.setItem('dark-mode', theme);
+  }, [theme]);*/
 
-  const handleSearch = async (event) => {
-    event.preventDefault();
-    //Recuperando valor del input
-    //const input = new window.FormData(event.target);
-    //const query = input.get('query');
-    console.log(query);
-
-    const res = await fetch(`https://api.github.com/users/${query}`);
-    const data = await res.json();
-    setLocation(data.location);
-    setWebsite(data.blog);
-    setTwitter(data.twitter_username);
-    setCompany(data.company);
-    setRepos(data.public_repos);
-    setFollowing(data.following);
-    setFollowers(data.followers);
-    setBio(data.bio);
-    setName(data.name);
-    setUserName(data.login);
-    setDateCreated(data.created_at);
-    setUserAvatar(data.avatar_url);
-  };
-
-  const handleChange = (event) => {
-    const newQuery = event.target.value;
-    if (newQuery.startsWith(' ')) return;
-    setQuery(newQuery);
-
-    if (newQuery === '') {
-      setError('No se puede buscar un usuario vacio');
-      return;
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+      //document.bodyElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      //document.bodyElement.classList.remove('dark');
     }
-    setError(null);
+  }, [theme]);
+  const handleThemeSwitch = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  };
+  const saveUserData = (user) => {
+    setUserData(user);
   };
 
   return (
-    <div className='container'>
-      <header className='header_container'>
-        <h1 className='header_title'>devfinder</h1>
-        <div className='header_icon'>
-          <h3>Light</h3>
-          <img src={sunIcon} />
-        </div>
-      </header>
-      <main>
-        <form onSubmit={handleSearch} className='search_section'>
-          <img src={searchIcon} />
-          <input
-            onChange={handleChange}
-            value={query}
-            name='query'
-            type='text'
-            placeholder='Search Github username...'
-          ></input>
-          <button>Search</button>
-        </form>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <section className='user_section'>
-          <div className='user_title'>
-            <img className='user_image' src={userAvatar} />
-            <div>
-              <p>{name}</p>
-              <p>@{userName}</p>
-              <p>{dateCreated}</p>
-            </div>
-          </div>
-          {bio ? <p>{bio}</p> : <p>Not available</p>}
-          <div className='user_stats'>
-            <div className='user_stats_title'>
-              <p>Repos</p>
-              <p>Followers</p>
-              <p>Following</p>
-            </div>
-            <div className='user_stats_info'>
-              <p>{repos}</p>
-              <p>{followers}</p>
-              <p>{following}</p>
-            </div>
-          </div>
-          <div className='user_info'>
-            <div className='user_info_location'>
-              <img src={locationIcon} />
-              <p>{location}</p>
-            </div>
-            <div className='user_info_location'>
-              <img src={websiteIcon} />
-              <p>{website}</p>
-            </div>
-            <div className='user_info_location'>
-              <img src={twitterIcon} />
-
-              {twitter ? <p>{twitter}</p> : <p>Not available</p>}
-            </div>
-            <div className='user_info_location'>
-              <img src={companyIcon} />
-              <p>{company}</p>
-            </div>
-          </div>
-        </section>
-      </main>
+    <div className='min-h-screen bg-bodyBG py-8 px-6 flex justify-center items-center'>
+      <div>
+        <Header darkMode={theme} toggleDarkMode={handleThemeSwitch} />
+        <InputSearch saveUserData={saveUserData} />
+        <UserData user={userData} />
+      </div>
     </div>
   );
 }
