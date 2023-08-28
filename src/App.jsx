@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Header } from './components/Header';
 import { InputSearch } from './components/InputSearch';
 import { UserData } from './components/UserData';
+import { Footer } from './components/Footer';
 
 //const USERINFO_ENDPOINT = 'https://api.github.com/users/octocat';
 
@@ -37,6 +38,7 @@ function App() {
         <Header darkMode={theme} toggleDarkMode={handleThemeSwitch} />
         <InputSearch saveUserData={saveUserData} />
         <UserData user={userData} />
+        <Footer />
       </div>
     </div>
   );
