@@ -49,7 +49,7 @@ export function UserData({ user }) {
 
   const joinDate = convertDate(user.created_at);
   return (
-    <section className='text-textColorOne bg-appBG rounded-2xl py-8 px-4 text-sm shadow-2xl dark:shadow-none  md:p-10 lg:p-12'>
+    <main className='text-textColorOne bg-appBG rounded-2xl py-8 px-4 text-sm shadow-2xl dark:shadow-none  md:p-10 lg:p-12'>
       <div className='flex items-center gap-5 mb-8 md:gap-8 md:mb-6'>
         <img
           className='rounded-full w-[70px] md:w-28'
@@ -124,6 +124,6 @@ export function UserData({ user }) {
           ))}
         </div>
       </div>
-    </section>
+    </main>
   );
 }
